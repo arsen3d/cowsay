@@ -27,7 +27,7 @@
             except requests.RequestException as e:
                 return f"Error: {e}"
         
-        gr.Interface(greet, "textbox", "t").launch()
+        gr.Interface(greet, "textbox", "textbox").launch()
     </gradio-lite>
     <!-- <script src="renderer.js"></script> -->
 </body>
