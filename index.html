@@ -3,12 +3,15 @@
 <head>
     <script type="module" crossorigin src="https://cdn.jsdelivr.net/npm/@gradio/lite/dist/lite.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@gradio/lite/dist/lite.css" />
+    <style>
+        body {  background-color: var(--background-fill-primary); }
+    </style>
 </head>
 <body>
-    <gradio-lite>
+    <gradio-lite playground layout="horizontal">
         import gradio as gr
         import requests
-        
+
         def greet(name):
             try:
                 response = requests.post('https://api.devnet.arsenum.com/run/job', json={
@@ -18,17 +21,11 @@
                         }
                 })
                 response.raise_for_status()
-                data = response.json()["dataid"]
-        
-                response = requests.get(f'https://api.devnet.arsenum.com/files/{data}/stdout')
-        
-                return response.text
-                #//"Hello, " + data['result'] + "!!!!!"
+                return requests.get(f'https://api.devnet.arsenum.com/files/{response.json()["dataid"]}/stdout').text
             except requests.RequestException as e:
                 return f"Error: {e}"
-        
+
         gr.Interface(greet, "textbox", "textbox").launch()
     </gradio-lite>
-    <!-- <script src="renderer.js"></script> -->
 </body>
 </html>
